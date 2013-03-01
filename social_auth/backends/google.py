@@ -14,9 +14,11 @@ APIs console https://code.google.com/apis/console/ Identity option.
 OpenID also works straightforward, it doesn't need further configurations.
 """
 from urllib import urlencode
-from urllib2 import Request
 
-from oauth2 import Request as OAuthRequest
+try:
+    from urllib.request import Request as OAuthRequest
+except ImportError:
+    from urllib2 import Request as OAuthRequest
 
 from django.utils import simplejson
 

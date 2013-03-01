@@ -3,13 +3,17 @@ EverNote OAuth support
 
 No extra configurations are needed to make this work.
 """
-from urllib2 import HTTPError
 try:
-    from urlparse import parse_qs
+    from urllib.parse import parse_qs
     parse_qs  # placate pyflakes
+    from urllib.error import HTTPError
 except ImportError:
-    # fall back for Python 2.5
-    from cgi import parse_qs
+    try:
+        from urlparse import parse_qs
+        from urllib2 import HTTPError
+    except ImportError:
+        # fall back for Python 2.5
+        from cgi import parse_qs
 
 from oauth2 import Token
 from social_auth.utils import setting

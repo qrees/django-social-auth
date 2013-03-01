@@ -10,7 +10,11 @@ You must:
 
 """
 import imp
-from urllib2 import HTTPError
+
+try:
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib2 import HTTPError
 
 from django.contrib.auth import authenticate
 
@@ -86,7 +90,7 @@ class ShopifyAuth(BaseOAuth2):
             shopify_session = self.shopifyAPI.Session(shop_url,
                                                       self.request.REQUEST)
             access_token = shopify_session.token
-        except self.shopifyAPI.ValidationException, e:
+        except self.shopifyAPI.ValidationException as e:
             raise AuthCanceled(self)
         except HTTPError, e:
             if e.code == 400:

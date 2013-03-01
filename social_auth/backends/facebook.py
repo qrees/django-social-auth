@@ -17,7 +17,11 @@ import hmac
 import hashlib
 import time
 from urllib import urlencode
-from urllib2 import HTTPError
+
+try:
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib2 import HTTPError
 
 from django.utils import simplejson
 from django.contrib.auth import authenticate

@@ -1,14 +1,20 @@
 import time
 import random
 import hashlib
-import urlparse
 import urllib
 import logging
-from urllib2 import urlopen
-from cgi import parse_qsl
 
 from collections import defaultdict
 from datetime import timedelta, tzinfo
+
+try:
+    from urllib.parse import parse_qsl, urlparse
+    parse_qsl  # placate pyflakes
+    from urllib.request import urlopen
+except ImportError:
+    from urlparse import parse_qsl
+    from urllib2 import urlopen
+    import urlparse
 
 from django.conf import settings
 from django.db.models import Model

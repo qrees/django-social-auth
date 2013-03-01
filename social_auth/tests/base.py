@@ -2,10 +2,14 @@ import re
 import urllib2
 import cookielib
 import urllib
-import urlparse
 import unittest
 from sgmllib import SGMLParser
 from django.conf import settings
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    import urlparse
 
 from django.test.client import Client
 from django.core.urlresolvers import reverse

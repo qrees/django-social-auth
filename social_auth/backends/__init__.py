@@ -9,7 +9,12 @@ Also the modules *must* define a BACKENDS dictionary with the backend name
 (which is used for URLs matching) and Auth class, otherwise it won't be
 enabled.
 """
-from urllib2 import Request, HTTPError
+try:
+    from urllib.error import HTTPError
+    from urllib.request import Request
+except ImportError:
+    from urllib2 import Request, HTTPError
+
 from urllib import urlencode
 
 from openid.consumer.consumer import Consumer, SUCCESS, CANCEL, FAILURE
@@ -543,7 +548,7 @@ class OpenIdAuth(BaseAuth):
                 self._openid_request = self.consumer().begin(
                     url_add_parameters(self.openid_url(), extra_params)
                 )
-            except DiscoveryFailure, err:
+            except DiscoveryFailure as err:
                 raise AuthException(self, 'OpenID discovery error: %s' % err)
         return self._openid_request
 

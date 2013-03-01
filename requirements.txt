@@ -1,3 +1,7 @@
-django>=1.2.5
-oauth2>=1.5.167
-python_openid>=2.2
+django>=1.4
+
+#python_openid>=2.2
+git+git://github.com/jefftriplett/python-openid.git
+
+#oauth2>=1.5.167
+git+git://github.com/jefftriplett/python-oauth2.git

@@ -5,7 +5,10 @@ Notes:
       on third party providers that (if using POST) won't be sending csrf
       token back.
 """
-from urllib2 import quote
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib2 import quote
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, REDIRECT_FIELD_NAME

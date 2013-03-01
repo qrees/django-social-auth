@@ -1,7 +1,11 @@
 """Steam OpenId support"""
 import re
 import urllib
-import urllib2
+
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 
 from django.utils import simplejson
 
@@ -28,7 +32,7 @@ class SteamBackend(OpenIDBackend):
                                             'steamids': user_id})
         details = {}
         try:
-            player = simplejson.load(urllib2.urlopen(url))
+            player = simplejson.load(urlopen(url))
         except (ValueError, IOError):
             pass
         else:

@@ -9,7 +9,11 @@ If username is not specified, OpenID 2.0 url used for authentication.
 from django.utils import simplejson
 
 from urllib import urlencode
-from urlparse import urlparse, urlsplit
+
+try:
+    from urlparse import urlparse, urlsplit
+except ImportError:
+    from urlparse import urlparse, urlsplit
 
 from social_auth.backends import OpenIDBackend, OpenIdAuth, OAuthBackend, \
                                  BaseOAuth2

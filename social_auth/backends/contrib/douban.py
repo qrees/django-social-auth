@@ -9,7 +9,10 @@ values.
 By default account id is stored in extra_data field, check OAuthBackend
 class for details on how to extend it.
 """
-from urllib2 import Request
+try:
+    from urllib.request import Request
+except ImportError:
+    from urllib2 import Request
 
 from django.utils import simplejson
 

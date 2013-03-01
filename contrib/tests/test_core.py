@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    import urlparse
 
 from selenium import webdriver
 

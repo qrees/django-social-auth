@@ -14,10 +14,17 @@ By default account id and token expiration time are stored in extra_data
 field, check OAuthBackend class for details on how to extend it.
 """
 from urllib import urlencode
-from urllib2 import Request, HTTPError
-from urlparse import parse_qsl
 from gzip import GzipFile
 from StringIO import StringIO
+
+try:
+    from urllib.parse import parse_qsl
+    parse_qsl  # placate pyflakes
+    from urllib.error import HTTPError
+    from urllib.request import Request
+except ImportError:
+    from urlparse import parse_qsl
+    from urllib2 import Request, HTTPError
 
 from django.utils import simplejson
 from django.conf import settings

@@ -11,7 +11,10 @@ User screen name is used to generate username.
 By default account id is stored in extra_data field, check OAuthBackend
 class for details on how to extend it.
 """
-from urllib2 import HTTPError
+try:
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib2 import HTTPError
 
 from django.utils import simplejson
 

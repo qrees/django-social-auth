@@ -3,7 +3,16 @@ Yammer OAuth2 support
 """
 import logging
 from urllib import urlencode
-from urlparse import parse_qs
+
+try:
+    from urllib.parse import parse_qs
+    parse_qs  # placate pyflakes
+except ImportError:
+    try:
+        from urlparse import parse_qs
+    except ImportError:
+        # fall back for Python 2.5
+        from cgi import parse_qs
 
 from django.utils import simplejson
 from django.utils.datastructures import MergeDict
@@ -68,7 +77,7 @@ class YammerOAuth2(BaseOAuth2):
 
         try:
             return simplejson.load(dsa_urlopen(url))
-        except Exception, e:
+        except Exception as e:
             logging.exception(e)
         return None
 

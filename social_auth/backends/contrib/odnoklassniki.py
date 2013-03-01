@@ -17,8 +17,11 @@ Then setup your application according manual and use information from
 registration mail to set settings values.
 """
 from urllib import urlencode, unquote
-from urllib2 import Request
 from hashlib import md5
+try:
+    from urllib.request import Request
+except ImportError:
+    from urllib2 import Request
 
 from django import forms
 from django.contrib.auth import authenticate
