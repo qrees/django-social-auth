@@ -14,7 +14,7 @@ class for details on how to extend it.
 try:
     from urllib.error import HTTPError
 except ImportError:
-    from urllib2 import HTTPError
+    from urllib.error import HTTPError
 
 from django.utils import simplejson
 

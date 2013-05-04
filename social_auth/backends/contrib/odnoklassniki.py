@@ -16,12 +16,12 @@ elif you're building iframe application,
 Then setup your application according manual and use information from
 registration mail to set settings values.
 """
-from urllib import urlencode, unquote
+from urllib.parse import urlencode, unquote
 from hashlib import md5
 try:
     from urllib.request import Request
 except ImportError:
-    from urllib2 import Request
+    from urllib.request import Request
 
 from django import forms
 from django.contrib.auth import authenticate
@@ -94,7 +94,7 @@ def odnoklassniki_oauth_sig(data, client_secret):
     suffix = md5('{0:s}{1:s}'.format(data['access_token'],
                                      client_secret)).hexdigest()
     check_list = sorted(['{0:s}={1:s}'.format(key, value)
-                            for key, value in data.items()
+                            for key, value in list(data.items())
                                 if key != 'access_token'])
     return md5(''.join(check_list) + suffix).hexdigest()
 
@@ -107,7 +107,7 @@ def odnoklassniki_iframe_sig(data, client_secret_or_session_secret):
     secret key. Otherwise it is signed with application secret key
     '''
     param_list = sorted(['{0:s}={1:s}'.format(key, value)
-                            for key, value in data.items()])
+                            for key, value in list(data.items())])
     return md5(''.join(param_list) +
                client_secret_or_session_secret).hexdigest()
 
@@ -185,7 +185,7 @@ class OdnoklassnikiIframeForm(forms.Form):
                   'apiconnection',
                   )
         response = {}
-        for fieldname in self.fields.keys():
+        for fieldname in list(self.fields.keys()):
             if fieldname in fields:
                 response[fieldname] = self.cleaned_data[fieldname]
         return response
@@ -200,7 +200,7 @@ class OdnoklassnikiAppBackend(SocialAuthBackend):
         return response['uid']
 
     def extra_data(self, user, uid, response, details):
-        return dict([(key, value) for key, value in response.items()
+        return dict([(key, value) for key, value in list(response.items())
                             if key in response['extra_data_list']])
 
     def get_user_details(self, response):

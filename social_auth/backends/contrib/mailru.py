@@ -12,15 +12,15 @@ Then update your settings values using registration information
 
 from django.conf import settings
 from django.utils import simplejson
-
-from urllib import urlencode, unquote
+from urllib.parse import urlencode, unquote
 from hashlib import md5
 
 try:
     from urllib.error import HTTPError
     from urllib.request import Request
 except ImportError:
-    from urllib2 import Request, HTTPError
+    from urllib.request import Request
+    from urllib.error import HTTPError
 
 from social_auth.backends import OAuthBackend, BaseOAuth2
 from social_auth.exceptions import AuthCanceled

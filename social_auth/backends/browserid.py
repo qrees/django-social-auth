@@ -1,7 +1,7 @@
 """
 BrowserID support
 """
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate
 from django.utils import simplejson

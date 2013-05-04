@@ -1,7 +1,7 @@
 import time
 import random
 import hashlib
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import logging
 
 from collections import defaultdict
@@ -12,9 +12,9 @@ try:
     parse_qsl  # placate pyflakes
     from urllib.request import urlopen
 except ImportError:
-    from urlparse import parse_qsl
-    from urllib2 import urlopen
-    import urlparse
+    from urllib.parse import parse_qsl
+    from urllib.request import urlopen
+    import urllib.parse
 
 from django.conf import settings
 from django.db.models import Model
@@ -132,7 +132,7 @@ def sanitize_redirect(host, redirect_to):
 
     # Heavier security check, don't allow redirection to a different host.
     try:
-        netloc = urlparse.urlparse(redirect_to)[1]
+        netloc = urllib.parse.urlparse(redirect_to)[1]
     except TypeError:  # not valid redirect_to value
         return None
 
@@ -230,10 +230,10 @@ def clean_partial_pipeline(request):
 def url_add_parameters(url, params):
     """Adds parameters to URL, parameter will be repeated if already present"""
     if params:
-        fragments = list(urlparse.urlparse(url))
-        fragments[4] = urllib.urlencode(parse_qsl(fragments[4]) +
-                                        params.items())
-        url = urlparse.urlunparse(fragments)
+        fragments = list(urllib.parse.urlparse(url))
+        fragments[4] = urllib.parse.urlencode(parse_qsl(fragments[4]) +
+                                        list(params.items()))
+        url = urllib.parse.urlunparse(fragments)
     return url
 
 

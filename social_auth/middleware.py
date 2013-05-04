@@ -31,7 +31,7 @@ class SocialAuthExceptionMiddleware(object):
                 # Ensure that messages are added to authenticated users only,
                 # otherwise this fails
                 if backend_name:
-                    extra_tags = u'social-auth %s' % backend_name
+                    extra_tags = 'social-auth %s' % backend_name
                 else:
                     extra_tags = ''
                 messages.error(request, message, extra_tags=extra_tags)
@@ -54,7 +54,7 @@ class SocialAuthExceptionMiddleware(object):
                setting('DEBUG')
 
     def get_message(self, request, exception):
-        return unicode(exception)
+        return str(exception)
 
     def get_redirect_uri(self, request, exception):
         if self.backend is not None:

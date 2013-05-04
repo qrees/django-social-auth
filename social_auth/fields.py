@@ -4,11 +4,10 @@ from django.utils import simplejson
 from django.utils.encoding import smart_text
 
 
-class JSONField(models.TextField):
+class JSONField(models.TextField, metaclass=models.SubfieldBase):
     """Simple JSON field that stores python structures as JSON strings
     on database.
     """
-    __metaclass__ = models.SubfieldBase
 
     def to_python(self, value):
         """
@@ -17,7 +16,7 @@ class JSONField(models.TextField):
         """
         if self.blank and not value:
             return None
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             try:
                 return simplejson.loads(value)
             except Exception as e:
@@ -28,7 +27,7 @@ class JSONField(models.TextField):
     def validate(self, value, model_instance):
         """Check value is a valid JSON string, raise ValidationError on
         error."""
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             super(JSONField, self).validate(value, model_instance)
             try:
                 simplejson.loads(value)

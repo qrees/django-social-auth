@@ -1,11 +1,11 @@
 """Steam OpenId support"""
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 try:
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen
+    from urllib.request import urlopen
 
 from django.utils import simplejson
 
@@ -28,7 +28,7 @@ class SteamBackend(OpenIDBackend):
 
     def get_user_details(self, response):
         user_id = self._user_id(response)
-        url = USER_INFO + urllib.urlencode({'key': setting('STEAM_API_KEY'),
+        url = USER_INFO + urllib.parse.urlencode({'key': setting('STEAM_API_KEY'),
                                             'steamids': user_id})
         details = {}
         try:

@@ -1,11 +1,11 @@
 """
 Mixcloud OAuth2 support
 """
-from urllib import urlencode
+from urllib.parse import urlencode
 try:
     from urllib.request import Request
 except ImportError:
-    from urllib2 import Request
+    from urllib.request import Request
 
 from django.utils import simplejson
 

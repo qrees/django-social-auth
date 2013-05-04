@@ -8,7 +8,7 @@ Notes:
 try:
     from urllib.parse import quote
 except ImportError:
-    from urllib2 import quote
+    from urllib.parse import quote
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, REDIRECT_FIELD_NAME

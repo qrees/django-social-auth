@@ -10,7 +10,7 @@ server.
 from django.contrib.auth import authenticate
 from django.utils import simplejson
 
-from urllib import urlencode
+from urllib.parse import urlencode
 from hashlib import md5
 from time import time
 
@@ -46,7 +46,7 @@ class VKontakteBackend(SocialAuthBackend):
     def get_user_details(self, response):
         """Return user details from VKontakte request"""
         nickname = response.get('nickname') or response['id']
-        if isinstance(nickname, (list, tuple, )):
+        if isinstance(nickname, (list, tuple )):
             nickname = nickname[0]
         return {
             'username': nickname,

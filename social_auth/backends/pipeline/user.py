@@ -22,7 +22,7 @@ def get_username(details, user=None,
     if email_as_username and details.get('email'):
         username = details['email']
     elif details.get('username'):
-        username = unicode(details['username'])
+        username = str(details['username'])
     else:
         username = uuid4().get_hex()
 
@@ -75,7 +75,7 @@ def update_user_details(backend, details, response, user=None, is_new=False,
 
     changed = False  # flag to track changes
 
-    for name, value in details.iteritems():
+    for name, value in details.items():
         # do not update username, it was already generated
         # do not update configured fields if user already existed
         if name in ('username', 'id', 'pk') or (not is_new and

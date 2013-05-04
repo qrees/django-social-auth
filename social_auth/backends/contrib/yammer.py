@@ -2,14 +2,14 @@
 Yammer OAuth2 support
 """
 import logging
-from urllib import urlencode
+from urllib.parse import urlencode
 
 try:
     from urllib.parse import parse_qs
     parse_qs  # placate pyflakes
 except ImportError:
     try:
-        from urlparse import parse_qs
+        from urllib.parse import parse_qs
     except ImportError:
         # fall back for Python 2.5
         from cgi import parse_qs

@@ -13,9 +13,9 @@ to request.
 By default account id and token expiration time are stored in extra_data
 field, check OAuthBackend class for details on how to extend it.
 """
-from urllib import urlencode
+from urllib.parse import urlencode
 from gzip import GzipFile
-from StringIO import StringIO
+from io import StringIO
 
 try:
     from urllib.parse import parse_qsl
@@ -23,8 +23,9 @@ try:
     from urllib.error import HTTPError
     from urllib.request import Request
 except ImportError:
-    from urlparse import parse_qsl
-    from urllib2 import Request, HTTPError
+    from urllib.parse import parse_qsl
+    from urllib.request import Request
+    from urllib.error import HTTPError
 
 from django.utils import simplejson
 from django.conf import settings
@@ -78,7 +79,7 @@ class StackoverflowAuth(BaseOAuth2):
 
         try:
             response = dict(parse_qsl(dsa_urlopen(request).read()))
-        except HTTPError, e:
+        except HTTPError as e:
             if e.code == 400:
                 raise AuthCanceled(self)
             else:

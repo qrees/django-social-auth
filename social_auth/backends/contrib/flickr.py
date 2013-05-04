@@ -13,7 +13,7 @@ try:
     parse_qs  # placate pyflakes
 except ImportError:
     try:
-        from urlparse import parse_qs
+        from urllib.parse import parse_qs
     except ImportError:
         # fall back for Python 2.5
         from cgi import parse_qs

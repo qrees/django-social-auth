@@ -9,8 +9,8 @@ try:
     from urllib.error import HTTPError
 except ImportError:
     try:
-        from urlparse import parse_qs
-        from urllib2 import HTTPError
+        from urllib.parse import parse_qs
+        from urllib.error import HTTPError
     except ImportError:
         # fall back for Python 2.5
         from cgi import parse_qs
@@ -63,7 +63,7 @@ class EvernoteBackend(OAuthBackend):
         # Evernote returns expiration timestamp in miliseconds, so it needs to
         # be normalized.
         if 'expires' in data:
-            data['expires'] = unicode(int(data['expires']) / 1000)
+            data['expires'] = str(int(data['expires']) / 1000)
         return data
 
     def get_user_details(self, response):
@@ -92,7 +92,7 @@ class EvernoteAuth(ConsumerBasedOAuth):
 
         try:
             response = self.fetch_response(request)
-        except HTTPError, e:
+        except HTTPError as e:
             # Evernote returns a 401 error when AuthCanceled
             if e.code == 401:
                 raise AuthCanceled(self)
@@ -114,7 +114,7 @@ class EvernoteAuth(ConsumerBasedOAuth):
         """Return user data provided"""
         # drop lists
         return dict([(key, val[0]) for key, val in
-            access_token.user_info.items()])
+            list(access_token.user_info.items())])
 
 
 # Backend definition
