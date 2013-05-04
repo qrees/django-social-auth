@@ -91,7 +91,7 @@ class FacebookAuth(BaseOAuth2):
         url = FACEBOOK_ME + urlencode(params)
 
         try:
-            data = simplejson.load(dsa_urlopen(url))
+            data = simplejson.loads(dsa_urlopen(url).read().decode("utf-8"))
         except ValueError:
             extra = {'access_token': sanitize_log_data(access_token)}
             log('error', 'Could not load user data from Facebook.',
@@ -105,6 +105,14 @@ class FacebookAuth(BaseOAuth2):
             log('debug', 'Found user data for token %s',
                 sanitize_log_data(access_token), extra={'data': data})
         return data
+
+    @classmethod
+    def get_key_and_secret(cls):
+        """Return tuple with Consumer Key and Consumer Secret for current
+        service provider. Must return (key, secret), order *must* be respected.
+        """
+        return backend_setting(cls, cls.SETTINGS_KEY_NAME), \
+               backend_setting(cls, cls.SETTINGS_SECRET_NAME)
 
     def auth_complete(self, *args, **kwargs):
         """Completes loging process, must return user instance"""
@@ -128,9 +136,9 @@ class FacebookAuth(BaseOAuth2):
                 raise AuthFailed(self, 'There was an error authenticating '
                                        'the app')
 
-            access_token = response['access_token'][0]
-            if 'expires' in response:
-                expires = response['expires'][0]
+            access_token = str(response[b'access_token'][0], encoding='ascii')
+            if b'expires' in response:
+                expires = str(response[b'expires'][0], encoding='ascii')
 
         if 'signed_request' in self.data:
             response = load_signed_request(

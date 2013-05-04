@@ -87,6 +87,13 @@ constant_time_compare = ct_compare
 utc = django_utc
 
 
+def force_decode(s):
+    if isinstance(s, str):
+        return s
+    if isinstance(s, bytes):
+        return s.decode()
+    return str(s)
+
 def sanitize_log_data(secret, data=None, leave_characters=4):
     """
     Clean private/secret data from log statements and other data.
@@ -97,6 +104,7 @@ def sanitize_log_data(secret, data=None, leave_characters=4):
     If no data is given, all but the first `leave_characters` of secret
     are simply replaced and returned.
     """
+    secret = force_decode(secret)
     replace_secret = (secret[:leave_characters] +
                       (len(secret) - leave_characters) * '*')
 
